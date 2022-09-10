@@ -50,22 +50,36 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
-    public void upVote(ServiceVotingDto votingDto) throws Exception {
-        Answer answer = new Answer();
-        if(votingDto.getVote().equals("UP_VOTE")) {
+    public void vote(ServiceVotingDto votingDto) throws Exception {
+        Answer answer = this.answerRepository.getAnswerById(votingDto.getAnswerId());
+
+        if (votingDto.getVoteStatus().equals("UP_VOTE")) {
+
             answer.setUpVote(answer.getUpVote() + 1);
+
+            VotingDto result = new VotingDto();
+            result.setAnswerId(answer.getAnswerId());
+            result.setVote(answer.getUpVote());
+
+            this.answerRepository.upVote(result);
+
+        } else if (votingDto.getVoteStatus().equals("DOWN_VOTE")) {
+
+            answer.setDownVote(answer.getDownVote() + 1);
+
+            VotingDto result = new VotingDto();
+            result.setAnswerId(answer.getAnswerId());
+            result.setVote(answer.getDownVote());
+
+            this.answerRepository.downVote(result);
+
         } else {
             throw new Exception(AnswerErrorMessages.ENTER_VALID_UPVOTE_OR_DOWN_VOTE.getErrorMessage());
         }
     }
 
     @Override
-    public void downVote(ServiceVotingDto votingDto) throws Exception {
-        Answer answer = new Answer();
-        if(votingDto.getVote().equals("DOWN_VOTE")) {
-            answer.setUpVote(answer.getDownVote() + 1);
-        } else {
-            throw new Exception(AnswerErrorMessages.ENTER_VALID_UPVOTE_OR_DOWN_VOTE.getErrorMessage());
-        }
+    public Answer getAnswerById(String answerId) throws Exception {
+        return this.answerRepository.getAnswerById(answerId);
     }
 }

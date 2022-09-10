@@ -46,11 +46,11 @@ public class AnswerRepositoryImpl implements AnswerRepository {
     /*DISPLAY ALL QUESTIONS WITH SORTING ACCORDING TO TIME (ASC)*/
     public static final String DISPLAY_ANSWERS_ASCENDING_ORDER =  "SELECT answerId, answer, date FROM ANSWERS order by date asc;";
 
-    public static final String UP_VOTE = "UPDATE ANSWER SET upVote = ? where answerId = ?";
+    public static final String UP_VOTE = "UPDATE ANSWERS SET upVote = ? where answerId = ?";
 
-    public static final String DOWN_VOTE = "UPDATE ANSWER SET downVote = ? where answerId = ?";
+    public static final String DOWN_VOTE = "UPDATE ANSWERS SET downVote = ? where answerId = ?";
 
-    private static final String GET_ANSWER_USING_ANSWER_ID = "SELECT * FROM ANSWER WHERE answerId =?";
+    private static final String GET_ANSWER_USING_ANSWER_ID = "SELECT * FROM ANSWERS WHERE answerId =?";
 
     @Override
     public Answer createAnswer(Answer newAnswer) {
@@ -75,29 +75,17 @@ public class AnswerRepositoryImpl implements AnswerRepository {
 
     @Override
     public void upVote(VotingDto votingDto) throws Exception {
+
         String answerId = votingDto.getAnswerId();
-
-        Answer answer = this.getAnswerById(votingDto.getAnswerId());
-        int currentUpVoteStatus = answer.getUpVote();
-
-        currentUpVoteStatus += 1;
-        answer.setUpVote(currentUpVoteStatus);
-
-        this.jdbcTemplate.update(UP_VOTE, currentUpVoteStatus, answerId);
+        int vote = votingDto.getVote();
+        this.jdbcTemplate.update(UP_VOTE, vote, answerId);
     }
 
     @Override
     public void downVote(VotingDto votingDto) throws Exception {
-        int vote = votingDto.getVote();
         String answerId = votingDto.getAnswerId();
-
-        Answer answer = this.getAnswerById(votingDto.getAnswerId());
-        int currentDownVoteStatus = answer.getUpVote();
-
-        currentDownVoteStatus += 1;
-        answer.setUpVote(currentDownVoteStatus);
-
-        this.jdbcTemplate.update(DOWN_VOTE, currentDownVoteStatus, answerId);
+        int vote = votingDto.getVote();
+        this.jdbcTemplate.update(DOWN_VOTE, vote, answerId);
     }
 
     @Override

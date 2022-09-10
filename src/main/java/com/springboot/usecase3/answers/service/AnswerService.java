@@ -17,7 +17,8 @@ public interface AnswerService {
 
     List<DisplayAllAnswersDto> answersInDescendingOrderOnTime();
 
-    void upVote(ServiceVotingDto votingDto) throws Exception;
-    void downVote(ServiceVotingDto votingDto) throws Exception;
+    void vote(ServiceVotingDto votingDto) throws Exception;
+
+    Answer getAnswerById(String answerId) throws Exception;
 
 }

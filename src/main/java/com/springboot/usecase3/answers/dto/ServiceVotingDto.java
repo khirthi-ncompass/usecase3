@@ -13,5 +13,5 @@ public class ServiceVotingDto {
     private String answerId;
 
     @NotNull(message = "vote cannot be null")
-    private String vote;
+    private String voteStatus;
 }

@@ -71,13 +71,7 @@ public class AnswerController {
     @PostMapping("/vote")
     ResponseEntity<ServiceVotingDto> createNewAccount(@Valid @RequestBody ServiceVotingDto votingDto) throws Exception {
 
-        if(votingDto.getVote().equals("UP_VOTE")){
-            this.answerService.upVote(votingDto);
-        } else if (votingDto.getVote().equals("DOWN_VOTE")) {
-            this.answerService.downVote(votingDto);
-        } else {
-            throw new Exception(AnswerErrorMessages.ENTER_VALID_UPVOTE_OR_DOWN_VOTE.getErrorMessage());
-        }
+        this.answerService.vote(votingDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
